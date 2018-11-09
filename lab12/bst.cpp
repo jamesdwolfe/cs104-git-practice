@@ -11,28 +11,20 @@
 
 using namespace std;
 
-int isBSTUtil(Node* node, int min, int max)  
+bool isBST(Node* node, int min, int max)  
 {  
-  if (node==NULL)  
-     return 1; 
-        
-  if (node->key < min || node->key > max)  
-     return 0;  
-  
-  return 
-    isBSTUtil(node->left, min, node->key-1) &&  // Allow only distinct values 
-    isBSTUtil(node->right, node->key+1, max);  // Allow only distinct values 
+  if (node==NULL)  return true; 
+  if (node->key < min || node->key > max)  return false;  
+  return isBST(node->left, min, node->key-1) && isBST(node->right, node->key+1, max); 
 } 
 //Helper functions?
 bool isBST(Node *root) {
-
-	 return(isBSTUtil(root, INT_MIN, INT_MAX));  
+	 return(isBST(root, INT_MIN, INT_MAX));  
 }  
 
 int height(Node* node) 
 { 
-   if(node == NULL) 
-       return 0; 
+   if(node == NULL) return 0; 
    return 1 + max(height(node->left), height(node->right)); 
 }  
    
@@ -42,16 +34,11 @@ bool isBalanced(Node *root) {
    int lh; 
    int rh;
 
-   if(root == NULL) 
-    return 1;  
+   if(root == NULL) return true;  
   
    lh = height(root->left); 
    rh = height(root->right); 
   
-   if( abs(lh-rh) <= 1 && 
-       isBalanced(root->left) && 
-       isBalanced(root->right)) 
-     return 1; 
- 
+   if(abs(lh-rh) <= 1 && isBalanced(root->left) && isBalanced(root->right)) return 1; 
    return 0;    
 }
